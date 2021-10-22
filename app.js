@@ -20,7 +20,6 @@ driver.get("https://www.gate.io/en/trade/BTC_USDT");
 
 
 
-
 //zsdzsd();
 crontime(5000);
 // async function zsdzsd(){
@@ -55,15 +54,13 @@ async function run (){
    async function migrate() {
        try {
         //  let label2 = await driver.findElement(By.id('pane-legend-item-value pane-legend-line')).getText();
-     
+          let date = new Date();
           let label = await driver.findElement(By.xpath('//*[@id="currPrice"]')).getText();
-          await sleep(2000);
-          
           let label2 = await driver.findElement(By.xpath('//*[@id="ticker_vol_b"]')).getText();
           MongoClient.connect(url, function(err, db) {
             if (err) throw err;
             var dbo = db.db("BTCRSI");
-            var myobj = { BtcPrice: label, Volume: label2 };
+            var myobj = { BtcPrice: label, Volume: label2, Date: date };
             dbo.collection("BTCandRSI").insertOne(myobj, function(err, res) {
               if (err) throw err;
               console.log("1 document inserted");
@@ -71,7 +68,7 @@ async function run (){
             });
           });
         //  let x =  0;
-            console.log(`${label} ${label2}`);
+            console.log(`${label} ${label2} ${date}`);
         
 
        } catch (err) {
